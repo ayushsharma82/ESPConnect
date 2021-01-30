@@ -24,8 +24,8 @@
  
 <br>
 
+<h4 align="center">Portal Preview:</h4>
 <p align="center">
-  <h4>Portal Preview:</h4>
   <img src="/docs/preview.png" width="520">
 </p>
 

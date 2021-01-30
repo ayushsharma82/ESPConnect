@@ -19,7 +19,7 @@
 <br>
 
 <p align="center">
-  <b>ESPConnect</b> is a simplistic and easy approch to having a WiFiManager on your ESP MCUs. It is a lightweight library and hosts a easy-to-use captive portal which does it's job without any hassle. ESPConnect works with both <b>ESP8266</b> & <b>ESP32</b>.
+  <b>ESPConnect</b> is a simplistic and easy approch to having a WiFiManager on your ESP MCUs. It is a lightweight library which let's you configure WiFi networks on your WiFi MCU without any fuss. ESPConnect works with both <b>ESP8266</b> & <b>ESP32</b>.
 </p>
  
 <br>

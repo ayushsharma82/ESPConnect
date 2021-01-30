@@ -26,7 +26,7 @@
 
 <p align="center">
   <h4>Portal Preview:</h4>
-  <img src="/docs/screenshot.jpg" width="520">
+  <img src="/docs/preview.png" width="520">
 </p>
 
 <br>

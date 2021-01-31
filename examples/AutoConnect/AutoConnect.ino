@@ -3,10 +3,9 @@
   ESPConnect - AutoConnect Example
   --------------------------------
 
-  Initializes ESPConnect and attaches itself to WebServer.
+  Initializes ESPConnect and attaches itself to AsyncWebServer.
   
-  Github: https://github.com/ayushsharma82/ESP-DASH
-  WiKi: https://ayushsharma82.github.io/ESP-DASH/
+  Github & WiKi: https://github.com/ayushsharma82/ESPConnect
   Works with both ESP8266 & ESP32
 */
 

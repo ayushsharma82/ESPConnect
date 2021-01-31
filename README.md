@@ -19,7 +19,7 @@
 <br>
 
 <p align="center">
-  <b>ESPConnect</b> is a simplistic and easy approch to having a WiFiManager on your ESP MCUs. It is a lightweight library which let's you configure WiFi networks on your WiFi MCU without any fuss. ESPConnect works with both <b>ESP8266</b> & <b>ESP32</b>.
+  <b>ESPConnect</b> is a simplistic and easy approch to having a WiFi manager on your ESP MCUs. It is a lightweight library which let's you configure WiFi networks without any fuss. ESPConnect works with both <b>ESP8266</b> & <b>ESP32</b>.
 </p>
  
 <br>
@@ -38,34 +38,53 @@ Go to Sketch > Include Library > Library Manager > Search for "ESPConnect" > Ins
 
 ###### Manual Install
 
-For Windows: Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/master.zip) and extract the .zip in Documents>Arduino>Libraries>{Place "ESPConnect" folder Here}
+For Windows: Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/main.zip) and extract the .zip in Documents>Arduino>Libraries>{Place "ESPConnect" folder Here}
 
-For Linux: Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/master.zip) and extract the .zip in Sketchbook>Libraries>{Place "ESPConnect" folder Here}
+For Linux: Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/main.zip) and extract the .zip in Sketchbook>Libraries>{Place "ESPConnect" folder Here}
 
 ###### Manually through IDE
 
-Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/master.zip), Go to Sketch>Include Library>Add .zip Library> Select the Downloaded .zip File.
+Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/main.zip), Go to Sketch>Include Library>Add .zip Library> Select the Downloaded .zip File.
+
+<br>
+
+<h2>Dependencies</h2>
+<p>
+  <h5>For ESP8266:</h5>
+  <ul>
+      <li>ESP8266 Arduino Core - <b>latest</b></li>
+      <li>ESPAsyncTCP - <b>v1.2.2</b></li>
+  	  <li>ESPAsyncWebServer - <b>v1.2.3</b></li>
+  </ul>
+  
+  <h5>For ESP32:</h5>
+  <ul>
+      <li>ESP32 Arduino Core - <b>latest</b></li>
+      <li>AsyncTCP - <b>v1.1.1</b></li>
+  	  <li>ESPAsyncWebServer - <b>v1.2.3</b></li>
+  </ul>
+</p>
 
 <br>
 
 <h2>Documentation</h2>
-<p>ESPConnect is a dead simple library which does your work in just 2 lines.</p>
+<p>ESPConnect is a dead simple library which does your work in just 2 lines:</p>
 
 <br>
 
- Include ESPConnect library `#include <ESPConnect.h>` at top of your sketch.
- 
- 1. Add - `ESPConnect.begin();` in your setup block.
- 2. Add - `ESPConnect.loop();` in your loop block.
- 
- That's all, now you have a WiFi Manager running on your ESP Module!
+#### `ESPConnect.autoConnect(const char* ssid, const char* password, unsigned long timeout)`
+This function sets the SSID and password for your captive portal. The third parameter - `timeout` is optional which dictates which tells the library to keep the captive portal running for `x` - milliseconds. (Default - `3 minutes`)
 
 <br>
 
-By default, ESPConnect uses your MCU's chip id as a unique SSID for your captive portal AP. If you want to set custom SSID and Password for autoConnect, then you can set it via `ESPConnect.autoConnect("ssid", "password");`. ( Place it above `begin` function ).
+#### `ESPConnect.begin(AsyncWebServer *server)`
+Call this function after `autoConnect` to start the WiFi manager. This function will first try to connect to the previous configured WiFi credentials and if those are not found, it will spin up a captive portal. If the user doesn't sets the wifi credentials, the library will return to execute your rest of the code in the setup block.
 
- 
+**Please note:** WiFi inactivity is managed by your code. If you think you need to reboot the MCU if there is no WiFi then please call the `ESP.restart()` function after checking `ESPConnect.begin()`'s response.
+
 <br>
+<br>
+
 <h2>Examples</h2>
  
  Checkout example for ESP8266 and ESP32 in `examples` directory. [Click Here](https://github.com/ayushsharma82/ESPConnect/tree/master/examples)
@@ -74,15 +93,13 @@ By default, ESPConnect uses your MCU's chip id as a unique SSID for your captive
 
 <h2>Contributions</h2>
 <p>Every contribution to this repository is highly appreciated! Don't fear to create issues / pull requests which enhance or fix the library, our maintainers are always ready to keep this library up & compiling.</p>
-<p>
-  ESPConnect consists of 2 parts: 
-  <ol>
-    <li>C++ library ( in `src` folder )</li>
-    <li>Svelte webpage ( in `ui` folder ) ( provided source code for transparency )</li>
-  </ol>
-  
-  You can contribute to the part you have most skill in.
-<p>
+
+ESPConnect consists of 2 parts: 
+- C++ library ( in `src` folder )
+- Svelte webpage ( in `portal` folder ) ( provided source code for transparency )</li>
+
+You can contribute to the part you have most skill in.
+
 
 <br>
 If you like this amazing library, You can buy me a coffee:

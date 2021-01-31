@@ -242,7 +242,7 @@ bool ESPConnectClass::erase(){
     preferences.putString("ssid", "");
     preferences.putString("password", "");
     preferences.end();
-    WiFi.disconnect(true)
+    WiFi.disconnect(true, true)
     return true;
   #endif
 }

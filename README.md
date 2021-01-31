@@ -38,13 +38,13 @@ Go to Sketch > Include Library > Library Manager > Search for "ESPConnect" > Ins
 
 ###### Manual Install
 
-For Windows: Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/master.zip) and extract the .zip in Documents>Arduino>Libraries>{Place "ESPConnect" folder Here}
+For Windows: Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/main.zip) and extract the .zip in Documents>Arduino>Libraries>{Place "ESPConnect" folder Here}
 
-For Linux: Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/master.zip) and extract the .zip in Sketchbook>Libraries>{Place "ESPConnect" folder Here}
+For Linux: Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/main.zip) and extract the .zip in Sketchbook>Libraries>{Place "ESPConnect" folder Here}
 
 ###### Manually through IDE
 
-Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/master.zip), Go to Sketch>Include Library>Add .zip Library> Select the Downloaded .zip File.
+Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/main.zip), Go to Sketch>Include Library>Add .zip Library> Select the Downloaded .zip File.
 
 <br>
 

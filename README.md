@@ -73,7 +73,7 @@ Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/ma
 <br>
 
 #### `ESPConnect.autoConnect(const char* ssid, const char* password, unsigned long timeout)`
-This function sets the SSID and password for your captive portal. The third parameter - `timeout` is optional which dictates which tells the library to keep the captive portal running for `x` - milliseconds. (Default - `3 minutes`)
+This function sets the SSID and password for your captive portal. The third parameter - `timeout` is optional which tells the library to keep the captive portal running for `x` - milliseconds. (Default - `3 minutes`)
 
 <br>
 

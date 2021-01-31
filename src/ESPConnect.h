@@ -13,6 +13,7 @@
   #include "WiFi.h"
   #include "WiFiClient.h"
   #include "AsyncTCP.h"
+  #include "Preferences.h"
 #endif
 
 #include "ESPAsyncWebServer.h"
@@ -52,12 +53,12 @@ class ESPConnectClass {
     void load_sta_credentials();
 
     // Start Captive portal
-    void start_portal();
+    bool start_portal();
 
 
   public:
     // Set Custom AP
-    void autoConnect(const char* ssid, const char* password, unsigned long timeout = DEFAULT_PORTAL_TIMEOUT);
+    void autoConnect(const char* ssid, const char* password = "", unsigned long timeout = DEFAULT_PORTAL_TIMEOUT);
 
     // Connect to Saved WiFi Credentials
     bool begin(AsyncWebServer* server, unsigned long timeout = DEFAULT_CONNECTION_TIMEOUT);

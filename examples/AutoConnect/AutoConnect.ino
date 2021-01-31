@@ -35,7 +35,7 @@ void setup(){
     AutoConnect AP
     Configure SSID and password for Captive Portal
   */
-  ESPConnect.autoConnect("ESPConfig1", "12345678");
+  ESPConnect.autoConnect("ESPConfig");
 
   /* 
     Begin connecting to previous WiFi

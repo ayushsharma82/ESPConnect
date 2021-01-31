@@ -47,6 +47,26 @@ For Linux: Download the [Repository](https://github.com/ayushsharma82/ESPConnect
 Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/master.zip), Go to Sketch>Include Library>Add .zip Library> Select the Downloaded .zip File.
 
 <br>
+
+<h2>Dependencies</h2>
+<p>
+  <h5>For ESP8266:</h5>
+  <ul>
+      <li>ESP8266 Arduino Core - <b>latest</b></li>
+      <li>ESPAsyncTCP - <b>v1.2.2</b></li>
+  	  <li>ESPAsyncWebServer - <b>v1.2.3</b></li>
+  </ul>
+  
+  <h5>For ESP32:</h5>
+  <ul>
+      <li>ESP32 Arduino Core - <b>latest</b></li>
+      <li>AsyncTCP - <b>v1.1.1</b></li>
+  	  <li>ESPAsyncWebServer - <b>v1.2.3</b></li>
+  </ul>
+</p>
+
+<br>
+
 <h2>Documentation</h2>
 <p>ESPConnect is a dead simple library which does your work in just 2 lines:</p>
 

@@ -242,6 +242,7 @@ bool ESPConnectClass::erase(){
     preferences.putString("ssid", "");
     preferences.putString("password", "");
     preferences.end();
+    return true;
   #endif
 }
 

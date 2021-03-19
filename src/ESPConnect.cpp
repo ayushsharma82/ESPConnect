@@ -56,8 +56,12 @@ bool ESPConnectClass::start_portal(){
       return request->send(202);
     }else{
       for (int i = 0; i < n; ++i){
+        String ssid = WiFi.SSID(i);
+        // Escape invalid characters
+        ssid.replace("\\","\\\\");
+        ssid.replace("\"","\\\"");
         json+="{";
-        json+="\"name\":\""+WiFi.SSID(i)+"\",";
+        json+="\"name\":\""+ssid+"\",";
         #if defined(ESP8266)
           json+="\"open\":"+String(WiFi.encryptionType(i) == ENC_TYPE_NONE ? "true": "false");
         #elif defined(ESP32)

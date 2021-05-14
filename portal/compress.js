@@ -58,7 +58,7 @@ function addLineBreaks(buffer){
 
     const FILE = 
 `
-#ifndef _webserial_webapge_h
+#ifndef _webserial_webpage_h
 #define _webserial_webpage_h
 
 const uint32_t ESPCONNECT_HTML_SIZE = ${GZIPPED_INDEX.length};

@@ -229,7 +229,7 @@ bool ESPConnectClass::begin(AsyncWebServer* server, unsigned long timeout){
     return start_portal();
   }else{
     ESPCONNECT_SERIAL("Connected to STA\n");
-    return false;
+    return true;
   }
 }
 

@@ -75,6 +75,7 @@ class ESPConnectClass {
 
     // Gets SSID of connected endpoint
     String getSSID();
+	String getPassword();
 };
 
 extern ESPConnectClass ESPConnect;

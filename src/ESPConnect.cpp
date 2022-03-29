@@ -1,6 +1,5 @@
 #include "ESPConnect.h"
 
-
 /* 
   Loads STA Credentials into memory
 */
@@ -125,6 +124,81 @@ bool ESPConnectClass::start_portal(){
         return request->send(500, "application/json", "{\"message\":\"Error while saving WiFi Credentials: "+String(ok)+"\"}");
       }
   });
+
+  // Save settings in flash
+  auto saveSettings = _server->on("/espconnect/saveSettings", HTTP_POST, [&](AsyncWebServerRequest *request){
+
+    // Get FormData
+    int params = request->params();
+    for(int i=0;i<params;i++){
+      AsyncWebParameter* p = request->getParam(i);
+
+      // // Save Settings preferences in Flash
+      #if defined(ESP8266)
+        //TODO
+      #elif defined(ESP32)
+        Serial.printf("Saving POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
+        Preferences preferences;
+        preferences.begin("espconnect", false);
+        preferences.putString(p->name().c_str(), p->value().c_str());
+        preferences.end();
+        
+      #endif
+    }
+
+    request->send(200, "application/json", "{\"message\":\"Saved...\"}");
+
+  });
+
+  // Retrieve settings from flash
+  auto getSettings = _server->on("/espconnect/getSettings", HTTP_POST, [&](AsyncWebServerRequest *request){
+
+    String resp = "[";
+
+    #if defined(ESP8266)
+      //TODO
+    #elif defined(ESP32)
+      Preferences preferences;
+      preferences.begin("espconnect", false);
+    #endif
+
+    // Get FormData
+    int params = request->params();
+    boolean added = false;
+    for(int i=0;i<params;i++){
+      AsyncWebParameter* p = request->getParam(i);
+      #if defined(ESP8266)
+        //TODO
+      #elif defined(ESP32)
+        const char * paramKey = p->name().c_str();
+        if (preferences.isKey(paramKey)){
+          Serial.printf("now checking var '%s' ", paramKey);
+
+          if (added)
+            resp += ",";
+
+          resp += "{\"";
+          resp += paramKey;
+          resp += "\": \"";
+          resp += preferences.getString(paramKey, "");
+          resp += "\"}";
+
+          added = true;
+        }
+      #endif
+    }
+       
+    resp += "]";
+
+    #if defined(ESP8266)
+      //TODO
+    #elif defined(ESP32)
+      preferences.end();
+    #endif
+      
+    request->send(200, "application/json", resp);
+
+  });
   
   auto indexGET = _server->on("/espconnect", HTTP_GET, [&](AsyncWebServerRequest *request){
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", ESPCONNECT_HTML, ESPCONNECT_HTML_SIZE);
@@ -155,6 +229,8 @@ bool ESPConnectClass::start_portal(){
     ESPCONNECT_SERIAL("Connected to STA\n");
   }
 
+  _server->removeHandler(&getSettings);
+  _server->removeHandler(&saveSettings);
   _server->removeHandler(&indexGET);
   _server->removeHandler(&scanGET);
   _server->removeHandler(&connectPOST);
@@ -177,7 +253,6 @@ bool ESPConnectClass::start_portal(){
     return false;
   }
 }
-
 
 /*
   Set Custom AP Credentials
@@ -250,7 +325,6 @@ bool ESPConnectClass::erase(){
     return true;
   #endif
 }
-
 
 /*
   Return Connection Status

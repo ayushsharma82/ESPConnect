@@ -239,6 +239,14 @@ bool ESPConnectClass::begin(AsyncWebServer* server, unsigned long timeout){
 */
 bool ESPConnectClass::erase(){
   #if defined(ESP8266)
+// -----------  Added this section to erase stored wifi credentials - RLB -20220318  --------
+    int ok = 0;
+    struct station_config	config = {};
+    memset(&config.ssid, 0, sizeof(config.ssid));
+    memset(&config.password, 0, sizeof(config.password));
+    config.bssid_set = false;
+    ok = wifi_station_set_config(&config);
+// -----------------------------------------------------------------------------------------
     return WiFi.disconnect(true);
   #elif defined(ESP32)
     Preferences preferences;
@@ -261,6 +269,10 @@ bool ESPConnectClass::isConnected(){
 
 String ESPConnectClass::getSSID(){
   return _sta_ssid;
+}
+
+String ESPConnectClass::getPassword(){
+  return _sta_password;
 }
 
 ESPConnectClass ESPConnect;

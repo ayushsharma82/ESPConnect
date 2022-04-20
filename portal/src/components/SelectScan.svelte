@@ -44,5 +44,8 @@
     <div class="column">
       <button class="button w-100" on:click={() => dispatch('refresh')}>Refresh</button>
     </div>
+    <div class="column">
+      <button class="button w-100" on:click={() => dispatch('manage')}>Manage</button>
+    </div>
   </div>
 </div>

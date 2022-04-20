@@ -3,8 +3,25 @@
 		onMount
 	} from 'svelte';
 	import Connect from './components/Connect.svelte';
+	import Manage from './components/Manage.svelte';
 	import SelectScan from './components/SelectScan.svelte';
 	import Status from './components/Status.svelte';
+	import {fetchWithTimeout} from './components/Utils.svelte';
+
+	let settingsFields = [
+		{
+			id : "server",
+			label : "Server",
+			ph : "e.g. mqtt.com",
+			val: ""
+		},
+		{
+			id : "tel",
+			label : "Telephone",
+			ph : "e.g. +14031239876",
+			val: ""
+		}
+	]
 
 	let data = {
 		loading: true,
@@ -15,6 +32,7 @@
 		selection: {
 			direct_connect: false,
 			selected: false,
+			manage: false,
 			ssid: ''
 		},
 		access_points: []
@@ -33,6 +51,7 @@
 	function clearSelection() {
 		data.selection.selected = false;
 		data.selection.direct_connect = false;
+		data.selection.manage = false;
 		data.selection.ssid = "";
 	}
 
@@ -49,13 +68,21 @@
 		await updateAccessPoints()
 	}
 
+	async function manage (){ 
+		data.selection.manage = true;
+	}
+
 	async function updateAccessPoints() {
-		const res = await fetch(`/espconnect/scan`);
+		//const res = await fetch(`/espconnect.json`);  // testing
+		const res = await fetchWithTimeout(`/espconnect/scan`);
 		if (res.status === 200) {
 			data.access_points = await res.json();
 			data.loading = false;
 		}else if(res.status === 202) {
 			setTimeout(updateAccessPoints, 2000);
+		} else {
+			data.loading = false;
+			data.access_points = [];
 		}
 		return res;
 	}
@@ -65,6 +92,8 @@
 			await updateAccessPoints();
 		} catch (err) {
 			console.log(err);
+			data.loading = false;
+			data.access_points = [];
 		}
 	});
 </script>
@@ -90,8 +119,10 @@
 					</div>
 				{:else}
 					{#if !data.connectStatus.sent}
-						{#if !data.selection.selected}
-							<SelectScan access_points={data.access_points} on:refresh={refresh} on:select={selectAccessPoint} />
+						{#if data.selection.manage}
+							<Manage settingsFields={settingsFields} on:back={clearSelection}/>
+						{:else if !data.selection.selected}
+							<SelectScan access_points={data.access_points} on:manage={manage} on:refresh={refresh} on:select={selectAccessPoint} />
 						{:else}
 							<Connect ssid={data.selection.ssid} direct_connect={data.selection.direct_connect} on:back={clearSelection} on:success={setConnectSuccess} on:error={setConnectError} />
 						{/if}
@@ -189,10 +220,10 @@
 		}
 	}
 
-	input[type=text], input[type=password]{
+	input[type=text], input[type=password], input[type=tel]{
 		padding: 2.5rem 2rem !important;
-		box-shadow: rgba(204, 219, 232, 0.2) 0px 3px 6px 1px inset, rgba(255, 255, 255, 0.4) 0px 0px 6px 6px inset;
-		border: none;
+		// box-shadow: rgba(204, 219, 232, 0.2) 0px 3px 6px 1px inset, rgba(255, 255, 255, 0.4) 0px 0px 6px 6px inset;
+		// border: none;
 		font-size: 16px !important;
 	}
 

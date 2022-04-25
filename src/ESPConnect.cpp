@@ -1,6 +1,16 @@
 #include "ESPConnect.h"
 
 
+/*
+  Check if ESPConnect was configured before
+*/
+
+bool ESPConnectClass::isConfigured() {
+  load_sta_credentials();
+  return _sta_ssid.length() > 0;
+}
+
+
 /* 
   Loads STA Credentials into memory
 */

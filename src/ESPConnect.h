@@ -57,6 +57,9 @@ class ESPConnectClass {
 
 
   public:
+    // Check if ESPConnect was configured before
+    bool isConfigured();
+
     // Set Custom AP
     void autoConnect(const char* ssid, const char* password = "", unsigned long timeout = DEFAULT_PORTAL_TIMEOUT);
 

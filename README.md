@@ -72,6 +72,11 @@ Download the [Repository](https://github.com/ayushsharma82/ESPConnect/archive/ma
 
 <br>
 
+#### `ESPConnect.isConfigured()`
+This function will return `true` or `false` depending on if ESPConnect was configured before or not. You can check with this function to perform certain functions before/after running ESPConnect portal.
+
+<br>
+
 #### `ESPConnect.autoConnect(const char* ssid, const char* password, unsigned long timeout)`
 This function sets the SSID and password for your captive portal. The third parameter - `timeout` is optional which tells the library to keep the captive portal running for `x` - milliseconds. (Default - `3 minutes`)
 
@@ -81,6 +86,16 @@ This function sets the SSID and password for your captive portal. The third para
 Call this function after `autoConnect` to start the WiFi manager. This function will first try to connect to the previous configured WiFi credentials and if those are not found, it will spin up a captive portal. If the user doesn't sets the wifi credentials, the library will return to execute your rest of the code in the setup block.
 
 **Please note:** WiFi inactivity is managed by your code. If you think you need to reboot the MCU if there is no WiFi then please call the `ESP.restart()` function after checking `ESPConnect.begin()`'s response.
+
+<br>
+
+#### `ESPConnect.isConnected()`
+This function will return `true` or `false` depending on the WiFi STA connection status of your MCU. Use this to check if your MCU is connected to access point or not.
+
+<br>
+
+#### `ESPConnect.erase()`
+This function will erase configured WiFi STA connection details & and then proceed to disconnect the module.
 
 <br>
 <br>

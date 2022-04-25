@@ -17,6 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: Arduino-CI/action@stable-1.x
+      - uses: ayushsharma82/action@master
         env:
           EXPECT_EXAMPLES: true

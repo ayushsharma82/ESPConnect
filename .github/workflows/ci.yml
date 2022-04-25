@@ -1,0 +1,22 @@
+name: ArduinoCI
+
+# Controls when the workflow will run
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: arduino/arduino-lint-action@v1
+        with:
+            library-manager: update
+            compliance: strict
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Arduino-CI/action@stable-1.x
+        env:
+          EXPECT_EXAMPLES: true

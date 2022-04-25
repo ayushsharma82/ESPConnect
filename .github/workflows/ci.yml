@@ -20,4 +20,4 @@ jobs:
       - uses: ayushsharma82/action@master
         env:
           EXPECT_EXAMPLES: true
-          CUSTOM_INIT_SCRIPT: /.github/scripts/dep-install.sh
+          CUSTOM_INIT_SCRIPT: .github/scripts/dep-install.sh

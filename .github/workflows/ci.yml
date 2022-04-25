@@ -1,23 +1,26 @@
-name: ArduinoCI
+name: Arduino Library CI
 
-# Controls when the workflow will run
-on: [push, pull_request]
+on: [pull_request, push, repository_dispatch]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  lint:
+  build:
+
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v3
-      - uses: arduino/arduino-lint-action@v1
+      - uses: actions/setup-python@v1
         with:
-            library-manager: update
-            compliance: strict
-  ci:
-    runs-on: ubuntu-latest
-    steps:
+          python-version: '3.x'
+      
       - uses: actions/checkout@v2
-      - uses: ayushsharma82/action@master
-        env:
-          EXPECT_EXAMPLES: true
-          CUSTOM_INIT_SCRIPT: .github/scripts/dep-install.sh
+
+      - uses: actions/checkout@v2
+        with:
+           repository: adafruit/ci-arduino
+           path: ci
+
+      - name: pre-install
+        run: bash ci/actions_install.sh
+
+      - name: test platforms
+        run: python3 ci/build_platform.py esp8266 esp32

@@ -32,8 +32,8 @@ platforms:
 
 compile:
   libraries:
-    - "ESP Async WebServer@1.2.3"
-    - "ESP AsyncTCP@1.2.2"
+    - "ESPAsyncWebServer@1.2.3"
+    - "ESPAsyncTCP@1.2.2"
     - "AsyncTCP@1.1.1"
   platforms:
     - esp32

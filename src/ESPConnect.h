@@ -33,8 +33,6 @@
   #define ESPCONNECT_SERIAL(x)
 #endif
 
-#define FLIP_LED_VAL(x) (_status_led_inverse ^= (x))
-
 
 class ESPConnectClass {
 

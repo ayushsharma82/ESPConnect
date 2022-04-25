@@ -18,6 +18,9 @@ jobs:
         with:
            repository: adafruit/ci-arduino
            path: ci
+      
+      - name: install-deps
+        run: bash .github/scripts/dep-install.sh
 
       - name: pre-install
         run: bash ci/actions_install.sh

@@ -53,6 +53,7 @@
 		const res = await fetch(`/espconnect/scan`);
 		if (res.status === 200) {
 			data.access_points = await res.json();
+			data.access_points = data.access_points.filter((thing, index, self) => self.findIndex(t => t.name === thing.name) === index)
 			data.loading = false;
 		}else if(res.status === 202) {
 			setTimeout(updateAccessPoints, 2000);

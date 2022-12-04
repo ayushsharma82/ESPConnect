@@ -77,9 +77,9 @@ bool ESPConnectClass::start_portal(){
         #elif defined(ESP32)
           json+="\"open\":"+String(WiFi.encryptionType(i) == WIFI_AUTH_OPEN ? "true": "false");
         #endif
-        json+="}";
-        if(i != n-1) json+=",";
+        json+="},";
       }
+      json+="{\"name\":\"\",\"open\":false,\"hidden\":true}";
       WiFi.scanDelete();
       if(WiFi.scanComplete() == -2){
         WiFi.scanNetworks(true);

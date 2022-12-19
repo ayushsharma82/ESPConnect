@@ -8,7 +8,7 @@
 <p align="center">
 <img src="https://img.shields.io/github/last-commit/ayushsharma82/ESPConnect.svg?style=for-the-badge" />
 &nbsp;
-<img src="https://img.shields.io/github/workflow/status/ayushsharma82/ESPConnect/Arduino%20Library%20CI/main?style=for-the-badge" />
+<img src="https://img.shields.io/github/actions/workflow/status/ayushsharma82/ESPConnect/ci.yml?branch=main&style=for-the-badge" />
 &nbsp;
 <img src="https://img.shields.io/github/license/ayushsharma82/ESPConnect.svg?style=for-the-badge" />
 &nbsp;

@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "Root"
+		},
+		{
+			"path": "./src",
+			"name": "Lib"
+		},
+		{
+			"path": "./portal",
+			"name": "Portal"
+		}
+	],
+	"settings": {}
+}

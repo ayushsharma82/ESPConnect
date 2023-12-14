@@ -17,5 +17,5 @@
   ],
   "version": "1.0.5",
   "frameworks": "arduino",
-  "platforms": "espressif"
+  "platforms": ["espressif32", "espressif8266"]
 }

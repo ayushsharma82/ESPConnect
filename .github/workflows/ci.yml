@@ -1,6 +1,7 @@
 name: Arduino Library CI
 
 on: 
+  workflow_dispatch:
   push:
     paths-ignore:
       - '**/**.md'
@@ -32,7 +33,7 @@ jobs:
 
       - uses: actions/checkout@v2
         with:
-           repository: adafruit/ci-arduino
+           repository: ayushsharma82/ci-arduino
            path: ci
 
       - name: pre-install

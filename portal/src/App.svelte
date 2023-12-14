@@ -13,9 +13,10 @@
 			success: true
 		},
 		selection: {
-			direct_connect: false,
+			ap_mode: false,
 			selected: false,
-			ssid: ''
+			ssid: '',
+			open: false
 		},
 		access_points: []
 	}
@@ -32,14 +33,16 @@
 
 	function clearSelection() {
 		data.selection.selected = false;
-		data.selection.direct_connect = false;
+		data.selection.ap_mode = false;
 		data.selection.ssid = "";
+		data.selection.open = false;
 	}
 
 	function selectAccessPoint(event) {
 		data.selection.ssid = event.detail.ssid
+		data.selection.ap_mode = event.detail.ap_mode
 		if(event.detail.open){
-			data.selection.direct_connect = true
+			data.selection.open = true
 		}
 		data.selection.selected = true;
 	}
@@ -73,6 +76,9 @@
 	<div class="row">
 		<div class="column text-center">
 			<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" class="logo"><path d="M5 12L3 12 3 21 12 21 12 19 5 19zM12 5L19 5 19 12 21 12 21 3 12 3z"></path></svg>
+			<p class="mb-2 text-muted">
+				Please select a WiFi network to connect to, or choose "AP Mode".
+			</p>
 		</div>
 	</div>
 	<div class="row mb-2">
@@ -93,7 +99,7 @@
 						{#if !data.selection.selected}
 							<SelectScan access_points={data.access_points} on:refresh={refresh} on:select={selectAccessPoint} />
 						{:else}
-							<Connect ssid={data.selection.ssid} direct_connect={data.selection.direct_connect} on:back={clearSelection} on:success={setConnectSuccess} on:error={setConnectError} />
+							<Connect ssid={data.selection.ssid} ap_mode={data.selection.ap_mode} open={data.selection.open} on:back={clearSelection} on:success={setConnectSuccess} on:error={setConnectError} />
 						{/if}
 					{:else}
 							<Status success={data.connectStatus.success} />
@@ -207,7 +213,7 @@
 	}
 
 	.main-container{
-		max-width: 42rem !important;
+		max-width: 52rem !important;
 		margin: 3rem auto;
 	}
 

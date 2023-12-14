@@ -43,12 +43,15 @@ class ESPConnectClass {
 
     String _sta_ssid = "";
     String _sta_password = "";
+    bool _apMode = false;
 
   private:
     void load_sta_credentials();
 
     // Start Captive portal
     bool start_portal();
+
+    int8_t wifiSignalQuality(int32_t rssi);
 
 
   public:

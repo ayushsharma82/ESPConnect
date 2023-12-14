@@ -10,13 +10,25 @@
   <div class="row h-100">
     {#if access_points.length > 0}
       <div class="column" style="margin-bottom: 3rem;">
+        <div class="row clickable-row" on:click={() => dispatch('select', { ap_mode: true, ssid: "" })}>
+          <div class="column">
+            <div class="container">
+              <div class="row flex-rows">
+                <div class="column">
+                  📡 AP Mode
+                </div>
+                <div class="column w-auto"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         {#each access_points as ap}
           <div class="row clickable-row" on:click={() => dispatch('select', { ssid: ap.name, open: ap.open })}>
             <div class="column">
               <div class="container">
                 <div class="row flex-rows">
                   <div class="column">
-                    { ap.name }
+                    🛜 &nbsp; <strong>{ap.signal}%</strong> &nbsp;➔&nbsp; { ap.name }
                   </div>
                   <div class="column w-auto">
                     {#if !ap.open}

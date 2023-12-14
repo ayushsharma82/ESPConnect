@@ -31,10 +31,15 @@ void ESPConnectClass::load_sta_credentials(){
     preferences.begin("espconnect", false);
     _sta_ssid = preferences.getString("ssid", "");
     _sta_password = preferences.getString("password", "");
+    _apMode = preferences.getBool("ap", false);
     preferences.end();
   #endif
 }
 
+int8_t ESPConnectClass::wifiSignalQuality(int32_t rssi) {
+  int32_t s = map(rssi, -90, -30, 0, 100);
+  return s > 100 ? 100 : (s < 0 ? 0 : s);
+}
 
 /*
   Start Captive Portal and Attach DNS & Webserver
@@ -47,7 +52,7 @@ bool ESPConnectClass::start_portal(){
   // Start Access Point
   WiFi.softAP(_auto_connect_ssid.c_str(), _auto_connect_password.c_str());
 
-  if(_sta_ssid != ""){
+  if(_sta_ssid != "" && !_apMode){
     WiFi.begin(_sta_ssid.c_str(), _sta_password.c_str());
   }
 
@@ -72,6 +77,8 @@ bool ESPConnectClass::start_portal(){
         ssid.replace("\"","\\\"");
         json+="{";
         json+="\"name\":\""+ssid+"\",";
+        json+="\"rssi\":"+String(WiFi.RSSI(i))+"\",";
+        json+="\"signal\":"+String(wifiSignalQuality(WiFi.RSSI(i)))+"\",";
         #if defined(ESP8266)
           json+="\"open\":"+String(WiFi.encryptionType(i) == ENC_TYPE_NONE ? "true": "false");
         #elif defined(ESP32)
@@ -81,7 +88,7 @@ bool ESPConnectClass::start_portal(){
         if(i != n-1) json+=",";
       }
       WiFi.scanDelete();
-      if(WiFi.scanComplete() == -2){
+      if(WiFi.scanComplete() == WIFI_SCAN_FAILED){
         WiFi.scanNetworks(true);
       }
     }
@@ -95,13 +102,16 @@ bool ESPConnectClass::start_portal(){
     // Get FormData
     String ssid = request->hasParam("ssid", true) ? request->getParam("ssid", true)->value().c_str() : "";
     String password = request->hasParam("password", true) ? request->getParam("password", true)->value().c_str() : "";
+    bool apMode = (request->hasParam("ap_mode", true) ? request->getParam("ap_mode", true)->value() : "") == "true";
 
-    if(ssid.length() <= 0){
-      return request->send(403, "application/json", "{\"message\":\"Invalid SSID\"}");
-    }
+    if(!apMode) {
+      if(ssid.length() <= 0){
+        return request->send(403, "application/json", "{\"message\":\"Invalid SSID\"}");
+      }
 
-    if(ssid.length() > 32 || password.length() > 64){
-      return request->send(403, "application/json", "{\"message\":\"Credentials exceed character limit of 32 & 64 respectively.\"}");
+      if(ssid.length() > 32 || password.length() > 64 || (!password.isEmpty() && password.length() < 8)){
+        return request->send(403, "application/json", "{\"message\":\"Credentials exceed character limit of 32 & 64 respectively, or password lower than 8 characters.\"}");
+      }
     }
     
     // Save WiFi Credentials in Flash
@@ -115,8 +125,11 @@ bool ESPConnectClass::start_portal(){
     #elif defined(ESP32)
       Preferences preferences;
       preferences.begin("espconnect", false);
-      preferences.putString("ssid", ssid.c_str());
-      preferences.putString("password", password.c_str());
+      preferences.putBool("ap", apMode);
+      if(!apMode) {
+        preferences.putString("ssid", ssid.c_str());
+        preferences.putString("password", password.c_str());
+      }
       preferences.end();
     #endif
 
@@ -126,9 +139,16 @@ bool ESPConnectClass::start_portal(){
       if(ok == ESP_OK){
     #endif
         configured = true;
-        _sta_ssid = ssid;
-        _sta_password = password;
-        WiFi.begin(_sta_ssid.c_str(), _sta_password.c_str());
+        _apMode = apMode;
+        if(apMode) {
+          WiFi.mode(WIFI_AP);
+          WiFi.softAP(_auto_connect_ssid.c_str(), _auto_connect_password.c_str());
+        } else {
+          _sta_ssid = ssid;
+          _sta_password = password;
+          WiFi.mode(WIFI_STA);
+          WiFi.begin(_sta_ssid.c_str(), _sta_password.c_str());
+        }
         request->send(200, "application/json", "{\"message\":\"Credentials Saved. Rebooting...\"}");
       }else{
         Serial.printf("WiFi config failed with: %d\n", ok);
@@ -180,8 +200,13 @@ bool ESPConnectClass::start_portal(){
   ESPCONNECT_SERIAL("Closed Portal\n");
   WiFi.softAPdisconnect(true);
   if(configured){
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(_sta_ssid.c_str(), _sta_password.c_str());
+    if(_apMode) {
+      WiFi.mode(WIFI_AP);
+      WiFi.softAP(_auto_connect_ssid.c_str(), _auto_connect_password.c_str());
+    } else {
+      WiFi.mode(WIFI_STA);
+      WiFi.begin(_sta_ssid.c_str(), _sta_password.c_str());
+    }
     return true;
   }else{
     return false;
@@ -216,8 +241,13 @@ bool ESPConnectClass::begin(AsyncWebServer* server, unsigned long timeout){
     // Try connecting to STA
     WiFi.persistent(false);
     WiFi.setAutoConnect(false);
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(_sta_ssid.c_str(), _sta_password.c_str());
+    if(_apMode) {
+      WiFi.mode(WIFI_AP);
+      WiFi.softAP(_auto_connect_ssid.c_str(), _auto_connect_password.c_str());
+    } else {
+      WiFi.mode(WIFI_STA);
+      WiFi.begin(_sta_ssid.c_str(), _sta_password.c_str());
+    }
 
     // Check WiFi connection status till timeout
     unsigned long lastMillis = millis();
@@ -229,7 +259,7 @@ bool ESPConnectClass::begin(AsyncWebServer* server, unsigned long timeout){
     Serial.print("]\n");
 
     if(WiFi.status() != WL_CONNECTED){
-      ESPCONNECT_SERIAL("Connection to STA Falied [!]\n");
+      ESPCONNECT_SERIAL("Connection to STA Failed [!]\n");
     }
   }
 
@@ -263,6 +293,7 @@ bool ESPConnectClass::erase(){
     preferences.begin("espconnect", false);
     preferences.putString("ssid", "");
     preferences.putString("password", "");
+    preferences.putBool("ap", false);
     preferences.end();
     WiFi.disconnect(true, true);
     return true;

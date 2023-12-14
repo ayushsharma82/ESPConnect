@@ -3,7 +3,8 @@
   const dispatch = createEventDispatcher();
 
   export let ssid;
-  export let direct_connect;
+  export let open;
+  export let ap_mode;
   let loading = false;
   let password = "";
 
@@ -12,6 +13,7 @@
     let formData = new FormData();
     formData.append('ssid', ssid);
     formData.append('password', password);
+    formData.append('ap_mode', ap_mode);
     const res = await fetch(`/espconnect/connect`, { method: 'POST', body: formData });
 		if (res.status === 200) {
       dispatch('success');
@@ -27,14 +29,29 @@
   }
 
   onMount(async () => {
-    if(direct_connect){
-      loading = true;
-      await connect();
-      loading = false;
+    if(ap_mode){
+      connect();
+      setTimeout(() => window.location = "http://192.168.4.1/", 10000);
     }
   })
 </script>
 
+{#if ap_mode}
+<div class="container d-flex flex-columns">
+  <div class="row h-100">
+    <div class="column">
+      <div class="row">
+        Activating AP mode...
+      </div>
+      <div class="row">
+        You will be redirected to: <a href="http://192.168.4.1/">http://192.168.4.1/</a>
+      </div>
+    </div>
+  </div>
+</div>
+{/if}
+
+{#if !ap_mode}
 <form class="container d-flex flex-columns" on:submit|preventDefault={connect}>
   <div class="row h-100">
     <div class="column">
@@ -47,14 +64,16 @@
       </div>
       <div class="row">
         <div class="column column-100">
-          <input type="text" placeholder="SSID" id="ssid" value={ssid} disabled required>
+          <input type="text" placeholder="SSID" id="ssid" value={ssid} disabled={loading} required>
         </div>
       </div>
+      {#if !open}
       <div class="row">
         <div class="column column-100">
           <input type="password" placeholder="WiFi Password" id="password" bind:value={password} disabled={loading} required minlength="8">
         </div>
       </div>
+      {/if}
     </div>
   </div>
   <div class="row flex-rows">
@@ -74,3 +93,4 @@
     </div>
   </div>
 </form>
+{/if}

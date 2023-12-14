@@ -1,21 +1,50 @@
 {
-  "name": "ESPConnect",
-  "keywords": "ESPConnect, WiFi, Manager, Captive, Portal, Configuration, Access Point",
-  "description": "Simple & Easy WiFi Manager with Captive Portal for ESP8266 / ESP32",
-  "repository":
-  {
+  "name": "MycilaESPConnect",
+  "version": "2.0.0",
+  "description": "Simple & Easy WiFi Manager with Captive Portal for ESP32",
+  "keywords": "http,async,websocket,webserver",
+  "homepage": "https://github.com/mathieucarbou/MycilaESPConnect",
+  "repository": {
     "type": "git",
-    "url": "https://github.com/ayushsharma82/ESPConnect.git"
+    "url": "https://github.com/mathieucarbou/MycilaESPConnect.git"
   },
-  "authors":
-  [
+  "authors": [
     {
       "name": "Ayush Sharma",
       "email": "asrocks5@gmail.com",
+      "maintainer": false
+    },
+    {
+      "name": "Mathieu Carbou",
+      "email": "mathieu.carbou@gmail.com",
       "maintainer": true
     }
   ],
-  "version": "1.0.5",
+  "license": "GPL-3.0-only",
   "frameworks": "arduino",
-  "platforms": "espressif"
+  "platforms": [
+    "espressif32"
+  ],
+  "dependencies": [
+    {
+      "owner": "esphome",
+      "name": "AsyncTCP-esphome",
+      "version": "^2.1.1",
+      "platforms": "espressif32"
+    },
+    {
+      "owner": "mathieucarbou",
+      "name": "ESPAsyncWebServer",
+      "version": "^2.3.0",
+      "platforms": "espressif32"
+    },
+    {
+      "owner": "bblanchon",
+      "name": "ArduinoJson",
+      "version": "^7.0.2",
+      "platforms": [
+        "espressif32"
+      ]
+    }
+  ]
 }

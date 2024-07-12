@@ -1,7 +1,7 @@
 {
   "name": "ESPConnect",
   "keywords": "ESPConnect, WiFi, Manager, Captive, Portal, Configuration, Access Point",
-  "description": "Simple & Easy WiFi Manager with Captive Portal for ESP8266 / ESP32",
+  "description": "[Deprecated] Switch to NetWizard library from same author for much better features and configuration page.",
   "repository":
   {
     "type": "git",

@@ -1,6 +1,7 @@
 #ifndef ESPConnect_h
 #define ESPConnect_h
 
+#warning ESPConnect has been deprecated and will not be maintained further. Consider switching to newer NetWizard library from same author which is much better and comes with configuration portal: https://github.com/ayushsharma82/NetWizard
 
 #include <functional>
 #include <Arduino.h>

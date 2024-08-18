@@ -15,9 +15,10 @@
 		selection: {
 			direct_connect: false,
 			selected: false,
-			ssid: ''
+			ssid: '',
+			hidden: false
 		},
-		access_points: []
+		access_points: [] 
 	}
 
 	function setConnectSuccess(){
@@ -38,6 +39,7 @@
 
 	function selectAccessPoint(event) {
 		data.selection.ssid = event.detail.ssid
+		data.selection.hidden = event.detail.hidden
 		if(event.detail.open){
 			data.selection.direct_connect = true
 		}
@@ -53,6 +55,7 @@
 		const res = await fetch(`/espconnect/scan`);
 		if (res.status === 200) {
 			data.access_points = await res.json();
+			data.access_points = data.access_points.filter((thing, index, self) => self.findIndex(t => t.name === thing.name) === index)
 			data.loading = false;
 		}else if(res.status === 202) {
 			setTimeout(updateAccessPoints, 2000);
@@ -93,7 +96,7 @@
 						{#if !data.selection.selected}
 							<SelectScan access_points={data.access_points} on:refresh={refresh} on:select={selectAccessPoint} />
 						{:else}
-							<Connect ssid={data.selection.ssid} direct_connect={data.selection.direct_connect} on:back={clearSelection} on:success={setConnectSuccess} on:error={setConnectError} />
+							<Connect ssid={data.selection.ssid} hidden={data.selection.hidden} direct_connect={data.selection.direct_connect} on:back={clearSelection} on:success={setConnectSuccess} on:error={setConnectError} />
 						{/if}
 					{:else}
 							<Status success={data.connectStatus.success} />

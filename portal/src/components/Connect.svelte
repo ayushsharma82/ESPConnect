@@ -3,6 +3,7 @@
   const dispatch = createEventDispatcher();
 
   export let ssid;
+  export let hidden;
   export let direct_connect;
   let loading = false;
   let password = "";
@@ -47,7 +48,11 @@
       </div>
       <div class="row">
         <div class="column column-100">
-          <input type="text" placeholder="SSID" id="ssid" value={ssid} disabled required>
+          {#if hidden!=true}
+            <input type="text" placeholder="SSID" id="ssid" value={ssid} disabled required>
+          {:else}
+            <input type="text" placeholder="SSID" id="ssid" bind:value={ssid} required>
+          {/if}
         </div>
       </div>
       <div class="row">

@@ -48,12 +48,23 @@ class ESPConnectClass {
     String _sta_ssid = "";
     String _sta_password = "";
 
+    boolean _configured = false;
+    boolean _blocking = true;
+    unsigned long _portalStartedAt; 
+
+    AsyncWebHandler* _indexGET;
+    AsyncWebHandler* _scanGET;
+    AsyncWebHandler* _connectPOST;
+    AsyncWebRewrite* _portalRewrite;
+
   private:
     void load_sta_credentials();
 
     // Start Captive portal
     bool start_portal();
 
+    // Stop Captive portal
+    void stop_portal();
 
   public:
     // Check if ESPConnect was configured before
@@ -67,6 +78,12 @@ class ESPConnectClass {
 
     // Erase Saved WiFi Credentials
     bool erase();
+
+    // When set to false. process() method must be called inside loop
+    void setBlocking(boolean value);
+
+    // Run in loop for non blocking mode
+    bool process();
 
     /*
       Data Getters
